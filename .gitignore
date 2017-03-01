@@ -1,0 +1,9 @@
+.DS_Store
+.phpintel/
+.env
+vendor/
+*.lock
+*.log
+config/config.ini
+/tmp/cache/
+/dist/
