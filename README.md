@@ -1,12 +1,13 @@
 # mtdashmore
 MultiDashmore - multitenant dashboard.  A good saas panel starter project.
 
-- [x] f3 framework - fatfree framework
+- [x] f3 framework - [FatFree Framework](https://github.com/bcosca/fatfree)
+- [x] CoPilot v2.3.3 - [AdminLTE + VueJS](https://github.com/misterGF/CoPilot)
 - [x] firebase auth
 - [x] REST api starter backend
 
 ## intro
-In order to support multi-tenant/client/projects, we are defining that the term: Project = Tenant
+In order to support multi-tenant/client/projects, we are defining that the generic term: Project = Client = Tenant = Whatever
 
 Home Controller (index.php)
 - to present a login screen.
@@ -38,4 +39,4 @@ php -S 0.0.0.0:8888 -t public
 ```
 
 # LICENSE
-GPL-3.0 due to FatFree Framework restriction.
+GPL-3.0 base on our use of FatFree Framework.
