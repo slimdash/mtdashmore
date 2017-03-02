@@ -6,4 +6,5 @@ vendor/
 *.log
 config/config.ini
 /tmp/cache/
+/tmp/twig/
 /dist/

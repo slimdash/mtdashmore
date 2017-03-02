@@ -15,6 +15,37 @@ class BaseController
         $this->f3                 = $f3;
         $this->params             = $params;
         $this->tokenData          = [];
+        $this->session            = new \Session();
+        $this->view               = \View::instance();
+        $this->isDebug            = $this->getOrDefault('DEBUG', '0') > '1';
+
+        $twig = new \Twig_Environment(new \Twig_Loader_Filesystem(trim($this->getOrDefault('UI', 'public/app'), '/') . '/'), [
+            'debug'       => $this->isDebug,
+            'cache'       => ($this->getTempDir() . 'twig'),
+            'auto_reload' => true
+        ]);
+        $twig->addFilter(new \Twig_SimpleFilter('f3', array($this, 'getOrDefault')));
+        $lexer = new \Twig_Lexer($twig, array(
+            'tag_comment'   => array('[#', '#]'),
+            'tag_block'     => array('[%', '%]'),
+            'tag_variable'  => array('[[', ']]'),
+            'interpolation' => array('#[', ']'),
+        ));
+        $twig->setLexer($lexer);
+        
+        $this->twig = $twig;
+    }
+
+
+    /**
+     * Shortcut method for rendering a view.
+     * @param  string $name        view name
+     * @param  array  $args        view params
+     * @return the    controller
+     */
+    public function render($name, array $args = [])
+    {
+        echo $this->twig->render($name . '.twig', $args);
     }
 
     /**

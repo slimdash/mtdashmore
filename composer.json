@@ -7,7 +7,9 @@
     "require": {
         "php" : "^5.6 || ^7.0",
         "bcosca/fatfree": "^3.6",
-        "firebase/php-jwt": "^4.0"
+        "firebase/php-jwt": "^4.0",
+        "guzzlehttp/guzzle": "^6.2",
+        "twig/twig": "^1.32"
     },
     "license": "GPL-3.0",
     "authors": [

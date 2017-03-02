@@ -1,5 +1,7 @@
 <?php
 require_once 'prepare.php';
+
+
 $f3 = \Base::instance();
 $f3->config(APP_PATH . '/config/config.ini');
 

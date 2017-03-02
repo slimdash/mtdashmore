@@ -1,5 +1,5 @@
 # mtdashmore
-More than just a simple Dashboard.  A good saas panel starter project.
+MultiDashmore - multitenant dashboard.  A good saas panel starter project.
 
 - [x] f3 framework - fatfree framework
 - [x] firebase auth
@@ -11,11 +11,11 @@ In order to support multi-tenant/client/projects, we are defining that the term:
 Home Controller (index.php)
 - to present a login screen.
 
-MainDashboard Controller (api/setting.php)
+MainDashboard Controller
 - to present a dashboard
 - to manage global modules
 
-ProjectDashboard Controller (api/project.php)
+ProjectDashboard Controller
 - to manage a project settings
 - to manage a project modules
 
@@ -25,6 +25,12 @@ Modules are your SAAS APPs.
 * A User has many Projects
 * A Project has many Modules
 * A User can have access to a Project, but may be excluded from a particular Module.
+
+### user permissions
+isAdmin, perms: ['allowp:projectcode:modulecode', 'denyp:projectcode:modulecode']
+
+* permit use of wildcard example - denyp:*
+* user are denied to all projects by default, you can allow all by granting - allowp:*
 
 ## to run
 ```
