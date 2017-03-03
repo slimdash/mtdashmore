@@ -19,7 +19,6 @@
         <li class="header">[[ "OPTIONS" ]]</li>
         <!-- Optionally, you can add icons to the links -->
         <li><a href="/"><i class="fa fa-dashboard"></i> <span>[[ "DASHBOARD" ]]</span></a></li>   
-        [% if user_permissions['user.view'] == true %]
         <li class="treeview">
           <a href="#">
             <i class="fa fa-users"></i> <span>[[ "USERS" ]]</span>
@@ -28,15 +27,10 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            [% if user_permissions['user.view'] == true %]
             <li><a href="/users"><i class="fa fa-users"></i> <span>[[ "USERS" ]]</span></a></li>   
-            [% endif %]
-            [% if user_permissions['acl.view'] == true %]
             <li><a href="/acl"><i class="fa fa-key"></i>[[ "PERMISSIONS&ROLES" ]]</a></li>
-            [% endif %]
           </ul>
         </li>
-        [% endif %]
 
         <li><a href="/test"><i class="fa fa-tag"></i> <span>[[ "TEST" ]]</span></a></li>   
       </ul>

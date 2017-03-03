@@ -2,7 +2,7 @@
 
 namespace Controllers;
 
-class MainDashboard extends BaseSecureController
+class MainDashboard extends BaseController
 {
     public function getDashboard() 
     {
@@ -10,5 +10,6 @@ class MainDashboard extends BaseSecureController
     	// filter out projects user does not have permission to
     	// return and render to main dashboard
     	// render main dashboard
+        $this->render('main.html');
     }
 }
