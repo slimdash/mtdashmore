@@ -1,0 +1,37 @@
+{
+  "rules": {
+    "users": {
+      "$uid": {
+        ".write": "data.val() == null && (auth != null && newData.parent().parent().child('admins').child(auth.uid).val() == true) || data.val() != null && newData.val() != null && (auth != null && newData.parent().parent().child('admins').child(auth.uid).val() == true || auth != null && auth.uid == $uid) || data.val() != null && newData.val() == null && (auth != null && newData.parent().parent().child('admins').child(auth.uid).val() == true || auth != null && auth.uid == $uid)",
+        ".read": "auth != null"
+      }
+    },
+    "admins": {
+      "$uid": {
+        ".read": "auth != null",
+        ".write": "auth != null && newData.parent().parent().child('admins').child(auth.uid).val() == true"
+      }
+    },
+    "projects": {
+      "$project_id": {
+        "admins": {
+          ".write": "auth != null && newData.parent().parent().parent().child('admins').child(auth.uid).val() == true"
+        },
+        "allowusers": {
+          ".write": "auth != null && newData.parent().parent().parent().child('admins').child(auth.uid).val() == true"
+        },
+        "denyusers": {
+          ".write": "auth != null && newData.parent().parent().parent().child('admins').child(auth.uid).val() == true"
+        },
+        "allowmodules": {
+          ".write": "auth != null && newData.parent().parent().parent().child('admins').child(auth.uid).val() == true"
+        },
+        "denymodules": {
+          ".write": "auth != null && newData.parent().parent().parent().child('admins').child(auth.uid).val() == true"
+        },
+        ".write": "data.val() == null && auth != null || data.val() != null && newData.val() != null && (auth != null && newData.parent().parent().child('admins').child(auth.uid).val() == true || auth != null && newData.parent().parent().child('projects').child($project_id).child('admins').child(auth.uid).val() == true)",
+        ".read": "auth != null"
+      }
+    }
+  }
+}

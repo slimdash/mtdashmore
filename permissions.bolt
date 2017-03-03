@@ -1,0 +1,80 @@
+// permissions.bolt
+//
+// Design goals:
+//
+// - All logged in user can get a list of users
+// - Only admin can create
+// - Only admin or currentUser can update or delete
+//
+// - Only admin can write roles
+//
+// - Any logged in user can get a list of projects
+// - Any logged in user can create a project
+// - Only admin can update a project
+// - No one can delete a project
+//
+// See https://www.firebase.com/docs/security/guide/user-security.html
+
+path /users/{uid} {
+  read() {
+    isSignedIn()
+  }
+
+  create() {
+    isAdmin()
+  }
+
+  update() {
+    isAdmin() || isCurrentUser(uid)
+  }
+
+  delete() {
+    isAdmin() || isCurrentUser(uid)
+  }
+}
+
+path /admins/{uid} {
+  read() {
+    isSignedIn()
+  }
+  write() { isAdmin() }
+}
+
+path /projects/{project_id} {
+  read() { isSignedIn() }
+  create() { isSignedIn() }
+  update() { isAdmin() || isProjectAdmin(project_id) }
+  delete() { false }
+
+  /admins {
+    write() { isAdmin() }
+  }
+
+  /allowusers {
+    write() { isAdmin() } 
+  }
+
+  /denyusers {
+    write() { isAdmin() }
+  }
+
+
+  /allowmodules {
+    write() { isAdmin() } 
+  }
+
+  /denymodules {
+    write() { isAdmin() }
+  }
+}
+
+//
+// Helper Functions
+//
+isCurrentUser(id) { auth != null && auth.uid == id }
+isNew(ref) { prior(ref) == null }
+isSignedIn() { auth != null }
+isAdmin() { auth != null && root.admins[auth.uid] == true }
+cantDelete() { !(delete()) }
+adminCanUpdate() { auth != null && root.projects[project_id].admins[auth.uid] == true }
+isProjectAdmin(project_id) { auth != null && root.projects[project_id].admins[auth.uid] == true }
