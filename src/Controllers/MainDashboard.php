@@ -2,7 +2,7 @@
 
 namespace Controllers;
 
-class MainDashboard extends BaseController
+class MainDashboard extends BaseSecuredController
 {
     public function getDashboard() 
     {

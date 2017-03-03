@@ -41,20 +41,12 @@ class Index extends BaseController
 
     public function getAuthFirebase()
     {
-        $token = $this->queryParam('token');
-
-        // validate token
-        $decodedTokenData = $this->decodeToken($token);
-
-        if (is_null($decodedTokenData["token"])) {
-            $this->f3->error('403', 'Token error: ' + $decodedTokenData["message"]);
-            return;
-        }
+        $token = $this->f3->get('GET.token');
 
         // store token into session
-        $this->f3->set('SESSION.decodedToken', $decodedTokenData);
+        $this->f3->set('SESSION.token', "Bearer " . $token);
 
         // success login redirect to home
-        return $f3->reroute('@home');
+        return $this->f3->reroute('@home');
     }
 }

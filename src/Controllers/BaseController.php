@@ -49,22 +49,22 @@ class BaseController
             "message" => ""
         ];
         try {
-            JWT::$leeway = 8;
+            \Firebase\JWT\JWT::$leeway = 8;
             $content     = file_get_contents("https://www.googleapis.com/robot/v1/metadata/x509/securetoken@system.gserviceaccount.com");
             $kids        = json_decode($content, true);
-            $jwt         = JWT::decode($token, $kids, array('RS256'));
+            $jwt         = \Firebase\JWT\JWT::decode($token, $kids, array('RS256'));
             $fbpid       = $this->getOrDefault('firebase.projectid', 'dummy');
             $issuer      = 'https://securetoken.google.com/' . $fbpid;
             $rst["token"] = $token;
 
             if ($jwt->aud != $fbpid) {
-                $rst["message"] = 'invalid audience';
+                $rst["message"] = 'invalid audience ' . $jwt->aud;
                 $rst["token"] = null;
             } elseif ($jwt->iss != $issuer) {
-                $rst["message"] = 'invalid issuer';
+                $rst["message"] = 'invalid issuer ' . $jwt->iss;
                 $rst["token"] = null;
             } elseif (empty($jwt->sub)) {
-                $rst["message"] = 'invalid user';
+                $rst["message"] = 'invalid sub ' . $jwt->sub;
                 $rst["token"] = null;
             };
 

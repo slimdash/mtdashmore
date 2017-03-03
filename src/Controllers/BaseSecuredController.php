@@ -11,16 +11,20 @@ class BaseSecuredController extends BaseController
      */
     public function beforeRoute()
     {
+        // HEADER: Get the access token from the header
         $headers = $this->getAuthorizationHeader();
 
-        // HEADER: Get the access token from the header
+        if (empty($headers)) {
+            $headers = $this->f3->get("SESSION.token");
+        }
+
         if (!empty($headers)) {
             if (preg_match('/Bearer\s(\S+)/i', $headers, $matches)) {
                 $token = $matches[1];
 
                 $decodedTokenData = $this->decodeToken($token);
                 if (is_null($decodedTokenData["token"])) {
-                    $this->f3->error('403', 'Token error: ' + $decodedTokenData["message"]);
+                    $this->f3->error('403', 'Token error: ' . $decodedTokenData["message"]);
                     return;
                 }
                 
@@ -31,7 +35,7 @@ class BaseSecuredController extends BaseController
             $this->f3->error('403', 'Authorization Bearer is required');
         }
 
-        $this->f3->error('403', 'Authorization header is required');
+        $this->f3->error('403', 'Authorization header is required when not logged in');
         return;
     }
 }
