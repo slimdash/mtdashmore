@@ -9,7 +9,8 @@
         "bcosca/fatfree": "^3.6",
         "firebase/php-jwt": "^4.0",
         "guzzlehttp/guzzle": "^6.2",
-        "twig/twig": "^1.32"
+        "twig/twig": "^1.32",
+        "adrorocker/php-firebase": "^0.2.1"
     },
     "license": "GPL-3.0",
     "authors": [

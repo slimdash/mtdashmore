@@ -46,6 +46,7 @@ class BaseController
     {
         $rst = [
             "token" => false,
+            "expired" => false,
             "message" => ""
         ];
         try {
@@ -69,8 +70,9 @@ class BaseController
             };
 
         } catch (\Firebase\JWT\ExpiredException $ee) {
+            $rst["expired"] = true;
             $rst["message"] = 'token has expired';
-            $rst["token"] = null;
+            // we want to keep the token for use later
         } catch (\Exception $e) {
             $rst["message"] = $e->getMessage();
             $rst["token"] = null;
