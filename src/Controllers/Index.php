@@ -43,7 +43,18 @@ class Index extends BaseController
     {
         $token = $this->queryParam('token');
 
-        // redirect to the main dashboard
-        return $this->response->withRedirect('/main/dash');
+        // validate token
+        $decodedTokenData = $this->decodeToken($token);
+
+        if (is_null($decodedTokenData["token"])) {
+            $this->f3->error('403', 'Token error: ' + $decodedTokenData["message"]);
+            return;
+        }
+
+        // store token into session
+        $this->f3->set('SESSION.decodedToken', $decodedTokenData);
+
+        // success login redirect to home
+        return $f3->reroute('@home');
     }
 }
