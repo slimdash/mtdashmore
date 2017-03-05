@@ -57,6 +57,7 @@ class BaseController
             $fbpid       = $this->getOrDefault('firebase.projectid', 'dummy');
             $issuer      = 'https://securetoken.google.com/' . $fbpid;
             $rst["token"] = $token;
+            $rst["decoded"] = $jwt;
 
             if ($jwt->aud != $fbpid) {
                 $rst["message"] = 'invalid audience ' . $jwt->aud;
@@ -227,7 +228,7 @@ class BaseController
         try {
             $response = $client->request('GET', $url, ['query' => $query, 'headers' => $inHeaders]);
             $rawBody = $response->getBody()->getContents();
-            $result = json_decode($rawBody);
+            $result = json_decode($rawBody, true);
         } catch(\GuzzleHttp\Exception\RequestException $e) {
             if ($e->hasResponse()) {
                 $response = $e->getResponse();

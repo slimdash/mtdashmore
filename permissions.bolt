@@ -15,56 +15,47 @@
 //
 // See https://www.firebase.com/docs/security/guide/user-security.html
 
-path /users/{uid} {
+path /users {
   read() {
     isSignedIn()
   }
+  /{uid} {
+    /profile {
+      create() {
+        isAdmin()
+      }
 
-  create() {
-    isAdmin()
-  }
+      update() {
+        isAdmin() || isCurrentUser(uid)
+      }
 
-  update() {
-    isAdmin() || isCurrentUser(uid)
-  }
+      delete() {
+        isAdmin() || isCurrentUser(uid)
+      }
+    }
 
-  delete() {
-    isAdmin() || isCurrentUser(uid)
+    /roles {
+      write() { isAdmin() }
+    }
   }
 }
 
-path /admins/{uid} {
-  read() {
-    isSignedIn()
-  }
-  write() { isAdmin() }
-}
-
-path /projects/{project_id} {
+path /projects {
   read() { isSignedIn() }
-  create() { isSignedIn() }
-  update() { isAdmin() || isProjectAdmin(project_id) }
-  delete() { false }
 
-  /admins {
-    write() { isAdmin() }
-  }
+  /{project_id} {
+    read() { isSignedIn() }
+    create() { isSignedIn() }
+    update() { isAdmin() || isProjectAdmin(project_id) }
+    delete() { false }
 
-  /allowusers {
-    write() { isAdmin() } 
-  }
+    /members {
+      write() { isAdmin() } 
+    }
 
-  /denyusers {
-    write() { isAdmin() }
-  }
-
-
-  /allowmodules {
-    write() { isAdmin() } 
-  }
-
-  /denymodules {
-    write() { isAdmin() }
+    /modules {
+      write() { isAdmin() } 
+    }
   }
 }
 
@@ -72,9 +63,8 @@ path /projects/{project_id} {
 // Helper Functions
 //
 isCurrentUser(id) { auth != null && auth.uid == id }
-isNew(ref) { prior(ref) == null }
 isSignedIn() { auth != null }
-isAdmin() { auth != null && root.admins[auth.uid] == true }
-cantDelete() { !(delete()) }
-adminCanUpdate() { auth != null && root.projects[project_id].admins[auth.uid] == true }
-isProjectAdmin(project_id) { auth != null && root.projects[project_id].admins[auth.uid] == true }
+isAdmin() { auth != null && root.users[auth.uid].roles.admin == true }
+adminCanUpdate() { auth != null && root.projects[project_id].members[auth.uid].isAdmin == true }
+isProjectAdmin(project_id) { auth != null && root.projects[project_id].members[auth.uid].isAdmin == true }
+isProjectMember(project_id) { root.projects[project_id].members[auth.uid].exists() }

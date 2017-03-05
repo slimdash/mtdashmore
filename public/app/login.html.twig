@@ -126,7 +126,7 @@
           console.log(user.providerData);
           if (!user.isAnonymous) {
             user.getToken().then(function(token){
-              document.location = '/main/auth/firebase/?token=' + token;
+              document.location = '/auth/firebase/?token=' + token;
             });
           }
           // redirect to dashboard
